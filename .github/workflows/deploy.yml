@@ -21,7 +21,7 @@ jobs:
         id: restore
         with:
           path: .cache
-          key: dataloader--      
+          key: dataloader
 
       - uses: actions/setup-node@v4
         with:
@@ -35,14 +35,14 @@ jobs:
       - uses: actions/cache/save@v4
         with:
           path: .cache
-          key: dataloader--${{ github.run_id }}
-          restore-keys: |
-            dataloader--
+          key: dataloader--${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: dataloader
 
       - if: steps.restore.outputs.cache-matched-key != ''
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh cache delete ${{steps.restore.outputs.cache-matched-key}}
+        run: gh cache delete ${{ steps.restore.outputs.cache-matched-key }}
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
