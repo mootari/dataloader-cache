@@ -13,20 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+
+      - uses: actions/cache/restore@v4
+        id: restore
         with:
           path: .cache
-          # This creates a new cache from the old one on every run, leaving a trail of dead caches.
-          # Acceptable for small datasets, but possibly devastating for larger ones.
-          key: dataloader--${{ github.run_id }}
-          restore-keys: |
-            dataloader--
+          key: dataloader--      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
       - run: npm ci
+
       - run: npm run build
+
+      - uses: actions/cache/save@v4
+        with:
+          path: .cache
+          key: dataloader--${{ github.run_id }}
+          restore-keys: |
+            dataloader--
+
+      - run: gh delete ${steps.restore.outputs.cache-primary-key}
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
