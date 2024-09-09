@@ -24,5 +24,5 @@ await mkdir(dirname(filePath), {recursive: true});
 // Update the file
 await writeFile(filePath, JSON.stringify(cachedData));
 
-const latestEntries = cachedData.slice(-5);
+const latestEntries = cachedData.slice(-20);
 console.log(JSON.stringify(latestEntries));
