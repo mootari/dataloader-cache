@@ -16,7 +16,10 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .cache
-          key: dataloader-${{ hashFiles('.cache/**/*') }}
+          # This creates a new cache from the old one on every run, leaving a trail of dead caches.
+          # Acceptable for small datasets, but possibly devastating for larger ones.
+          key: dataloader--${{ github.run_id }}
+          restore_key: dataloader--
       - uses: actions/setup-node@v4
         with:
           node-version: 20
