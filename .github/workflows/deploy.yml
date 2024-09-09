@@ -19,7 +19,8 @@ jobs:
           # This creates a new cache from the old one on every run, leaving a trail of dead caches.
           # Acceptable for small datasets, but possibly devastating for larger ones.
           key: dataloader--${{ github.run_id }}
-          restore_key: dataloader--
+          restore-keys: |
+            dataloader--
       - uses: actions/setup-node@v4
         with:
           node-version: 20
