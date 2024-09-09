@@ -8,6 +8,9 @@ on:
   # Run this workflow when triggered manually in GitHub’s UI.
   workflow_dispatch: {}
 
+permissions:
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
