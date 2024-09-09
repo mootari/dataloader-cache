@@ -36,8 +36,10 @@ jobs:
           restore-keys: |
             dataloader--
 
-      - run: gh cache delete ${{steps.restore.outputs.cache-matched-key}}
-
+      - if: steps.restore.outputs.cache-matched-key != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh cache delete ${{steps.restore.outputs.cache-matched-key}}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
